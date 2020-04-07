@@ -10,7 +10,7 @@ import Checkbox from '../../checkbox';
 import useFiltering from '../../../hooks/useFiltering';
 import useModal from '../../../hooks/useModal';
 import ReactDOM from 'react-dom';
-import InputButton from '../../inputButton';
+import InputButton from '../../autosizeInput';
 
 const Modal = (): React.ReactElement => {
     const { FilteringState, onToggleSearchAgain, onSelSpeech, onToggleExcludeKeyword } = useFiltering();
@@ -62,8 +62,14 @@ const Modal = (): React.ReactElement => {
     `;
 
     const inputComplete = (e?: any) => {
+        console.log('----blur',e);
         // 리렌더링 되서 element가 사라질 떄 blur이벤트가 발생되어 원했던 결과와 달라지는 것 같음
-        // onToggleExcludeKeyword(false);
+        if(!e.target.querySelector("input")){
+            // onToggleExcludeKeyword(false);
+        }else {
+            console.log('----업',e,e.target);
+        }
+       
     };
     const keyDown = (e: any) => {
         if (e.keyCode === 13) { // enter입력
@@ -80,7 +86,7 @@ const Modal = (): React.ReactElement => {
                     <Label color={theme.colors.g500}
                         weight='bold'
                         size='large'>필터링
-                    </Label>
+                </Label>
                     <div className='filter'>
                         {/* <CheckIc icon={<CloseIc />} variant='text' size='small'></CheckIc> */}
                         <ModalCbx
@@ -116,7 +122,7 @@ const Modal = (): React.ReactElement => {
                     <Label color={theme.colors.g500}
                         weight='bold'>제외할 키워드
                     </Label>
-                    {FilteringState.ExcludeKeywordFlag && <InputButton
+                    {/* {FilteringState.ExcludeKeywordFlag && <InputButton
                         onBlur={(e: any) => inputComplete(e)}
                         onKeyDown={keyDown}
                     ></InputButton>}
@@ -127,7 +133,21 @@ const Modal = (): React.ReactElement => {
                         color={theme.colors.blue}
                         variant='outlined'
                         corner='rounded'
-                        btnInnerIc={true}></IconButton>
+                        btnInnerIc={true}></IconButton> */}
+                    {FilteringState.ExcludeKeywordFlag ? <InputButton
+                        // onBlur={(e: any) => inputComplete(e)}
+                        onClick={(e: any) => inputComplete(e)}
+                        onKeyDown={keyDown}
+                    ></InputButton> :
+                        <IconButton
+                            onClick={() => onToggleExcludeKeyword(true)}
+                            className='btn'
+                            icon={<CloseIc />}
+                            color={theme.colors.blue}
+                            variant='outlined'
+                            corner='rounded'
+                            btnInnerIc={true}></IconButton>
+                    }
                 </div>
             </StyleDiv>
         </ModalWrapp>

@@ -13,6 +13,7 @@ export interface InputProps {
     placeholderIsMinWidth: boolean;
     extraWidth?: any;
     onBlur?: (e: any) => void;
+    onClick?: (e: any) => void;
     onKeyDown?: (e: any) => void;
     ref?: any;
 }
@@ -26,6 +27,7 @@ const BaseInput = (props: InputProps): React.ReactElement<InputProps> => {
         placeholderIsMinWidth,
         extraWidth,
         onBlur,
+        onClick,
         onKeyDown,
         ...inputProps
     } = props;
@@ -87,6 +89,7 @@ const BaseInput = (props: InputProps): React.ReactElement<InputProps> => {
                 ref={(ref) => { inputEle = ref; }}
                 value={AutosizeInputState.value}
                 onBlur={onBlur}
+                onClick={onClick}
                 onKeyDown={onKeyDown}
                 autoFocus
             />
