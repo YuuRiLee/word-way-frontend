@@ -18,9 +18,10 @@ const filtering = createReducer<FilteringState, FilteringAction>(initialState, {
     return state;
   },
   [TOGGLE_EXCLUDE_KEYWORD]: (state, action) => {
+    const a = action.payload;
     return {
       ...state,
-      ExcludeKeywordFlag: action.payload,
+      ExcludeKeywordFlag: a,
     };
   },
   [ADD_KEYWORD]: (state, action) => {

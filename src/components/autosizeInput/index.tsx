@@ -1,146 +1,135 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import useAutosizeInput from '../../hooks/useAutosizeInput';
-
-export interface InputProps {
-    disabled: boolean;
-    label: string;
-    color: string;
+export interface AutosizeInputProps {
     type: 'text';
-    className: string;
-    placeholder?: string;
+    maxLength: number;
     minWidth: number;
     placeholderIsMinWidth: boolean;
+    className?: string;
+    placeholder?: string;
     extraWidth?: any;
+    disabled?: boolean;
+    label?: string;
+    color?: string;
+    onChange: (e: any) => void;
     onBlur?: (e: any) => void;
-    onClick?: (e: any) => void;
     onKeyDown?: (e: any) => void;
-    ref?: any;
 }
-const BaseInput = (props: InputProps): React.ReactElement<InputProps> => {
+const BaseInput = (props: AutosizeInputProps): React.ReactElement<AutosizeInputProps> => {
     const {
-        disabled,
         className,
-        color,
         placeholder,
         minWidth,
         placeholderIsMinWidth,
         extraWidth,
-        onBlur,
-        onClick,
-        onKeyDown,
-        ...inputProps
+        onChange,
+        ...other
     } = props;
     const { AutosizeInputState, onChangeValue, onChangeWidth } = useAutosizeInput();
     let sizerEle: any;
-    let inputEle: any;
     let placeHolderSizer: any;
-    let newInputWidth = 0;
+    let newInputWidth: number;
 
     const resizeInput = (e: any) => {
+        onChange(e);
         if (!sizerEle || typeof sizerEle.scrollWidth === 'undefined') {
             return;
         }
+        const changeValue = e.target.value;
         onChangeValue({
-            value: e,
-            inputWidth: sizerEle.scrollWidth,
-            el: sizerEle,
+            value: changeValue,
         });
-        if (placeholder && (!AutosizeInputState.value || (AutosizeInputState.value && placeholderIsMinWidth))) {
-            newInputWidth = Math.max(sizerEle.scrollWidth, placeHolderSizer.scrollWidth) + 20;
-        } else {
-            newInputWidth = sizerEle.scrollWidth + 20; // font size로 계산 1.1em -> 19px
-        }
+    };
 
-        newInputWidth += 0;
+    const updateInputWidth = () => {
+        if (placeholder && (!AutosizeInputState.value || (AutosizeInputState.value && placeholderIsMinWidth))) {
+            newInputWidth = Math.max(sizerEle.scrollWidth, placeHolderSizer.scrollWidth) + 2;
+        } else {
+            newInputWidth = sizerEle.scrollWidth + 2;
+        }
         if (newInputWidth <= minWidth) {
             newInputWidth = minWidth;
         }
-
         onChangeWidth({
             inputWidth: newInputWidth,
-            el: e,
         });
     };
 
-    const dynamicStyle = {
-        width: `${AutosizeInputState.inputWidth}px`,
-    };
+    useEffect(() => updateInputWidth(), [AutosizeInputState.value]);
 
-    const CuSpan = styled.span`
-    position: absolute;
-    overflow: scroll;
-    white-space: pre;
-    letter-spacing: -0.9px;
-    font-weight: 500;
-    font-size: 1.1em;
-    white-space: pre;
-    display: block;
-    /* visibility: hidden; */
-    `;
-
-    return (
-        <AutosizeInputWrapp>
-            <input
-                className={className}
-                onChange={(e) => resizeInput(e)}
-                {...inputProps}
-                style={dynamicStyle}
-                ref={(ref) => { inputEle = ref; }}
-                value={AutosizeInputState.value}
-                onBlur={onBlur}
-                onClick={onClick}
-                onKeyDown={onKeyDown}
-                autoFocus
-            />
-            <CuSpan ref={(ref) => { sizerEle = ref; }}>{AutosizeInputState.value}</CuSpan>
-            {placeholder ? <SizerDiv1 ref={(ref) => { placeHolderSizer = ref; }}>{placeholder}</SizerDiv1> : null}
-        </AutosizeInputWrapp >
-
-    );
-};
-
-const AutosizeInputWrapp = styled.div`
-        display:inline-block;
-        padding: 6px 14px;
-        background: ${(props) => props.theme.colors.g100};
-        border-radius: 30px;
-        position: relative;
-    `;
-const SizerDiv1 = styled.div`
-    position: absolute;
-    overflow: scroll;
-    letter-spacing: -0.9px;
-    font-weight: 500;
-    font-size: 1.1em;
-    white-space: pre;
-`;
-const InputButton = styled(BaseInput)((props) => {
-    const { theme } = props;
-    const StyleButton = css`
-        box-sizing: content-box;
+    const HiddenText = styled.span`
+        position: absolute;
+        overflow: scroll;
         white-space: pre;
         letter-spacing: -0.9px;
         font-weight: 500;
         font-size: 1.1em;
-        border: none;
-        color: ${theme.colors.blue};
-        caret-color: ${theme.colors.blue};
-        outline: none;
-        background: transparent;
+        white-space: pre;
+        display: block;
+        visibility: hidden;
+    `;
+    const dynamicStyle = {
+        width: `${AutosizeInputState.inputWidth}px`,
+    };
+
+    return (
+        <div className={className}>
+            <input
+                onChange={(e) => resizeInput(e)}
+                style={dynamicStyle}
+                value={AutosizeInputState.value}
+                placeholder={placeholder}
+                {...other}
+                autoFocus
+            />
+            <HiddenText ref={(ref) => { sizerEle = ref; }}>
+                {AutosizeInputState.value}
+            </HiddenText>
+            {
+                placeholder
+                && (
+                    <HiddenText ref={(ref) => { placeHolderSizer = ref; }}>
+                        {placeholder}
+                    </HiddenText>
+                )
+            }
+        </div>
+    );
+};
+
+const AutosizeInput = styled(BaseInput)((props) => {
+    const { color } = props;
+    const StyleButton = css`
+        display: inline-block;
+        position: relative;
+        display: flex;
+        width: fit-content;
+        align-items: center;
+        input {
+            box-sizing: content-box;
+            white-space: pre;
+            letter-spacing: -0.9px;
+            font-weight: 500;
+            font-size: 1.1em;
+            border: none;
+            color: ${color};
+            caret-color: ${color};
+            outline: none;
+            background: transparent;
+        }
   `;
+
     return StyleButton;
 });
 
 BaseInput.defaultProps = {
-    disabled: false,
-    color: 'red',
+    color: 'black',
     type: 'text',
-    label: '',
-    className: null,
-    placeholder: '',
-    minWidth: 60,
+    minWidth: 1,
+    maxLength: 17,
     placeholderIsMinWidth: false,
+    onChange: () => { },
 };
 
-export default React.memo(InputButton);
+export default AutosizeInput;

@@ -9,8 +9,8 @@ import { theme } from './static/theme';
 import rootReducer from './modules';
 import { createStore } from 'redux';
 
-const store = createStore(rootReducer);
-
+// const store = createStore(rootReducer);
+const store = createStore(rootReducer,(window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__());
 ReactDOM.render(
     <Provider store={store}>
     <ThemeProvider theme={theme}>

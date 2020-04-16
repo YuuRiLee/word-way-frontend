@@ -10,7 +10,7 @@ import Checkbox from '../../checkbox';
 import useFiltering from '../../../hooks/useFiltering';
 import useModal from '../../../hooks/useModal';
 import ReactDOM from 'react-dom';
-import InputButton from '../../autosizeInput';
+import InputButton from '../../autosizeButton';
 
 const Modal = (): React.ReactElement => {
     const { FilteringState, onToggleSearchAgain, onSelSpeech, onToggleExcludeKeyword } = useFiltering();
@@ -18,6 +18,7 @@ const Modal = (): React.ReactElement => {
     const theme = useContext(ThemeContext);
     const speechs = ['명사', '동사', '형용사', '관형사', '대명사', '감탄사', '부사']; // 변경 예정
 
+    let flag = false;
     const StyleDiv = styled.div`
         border-radius:20px;
         background: white;
@@ -39,6 +40,9 @@ const Modal = (): React.ReactElement => {
                     margin-right: 0px;
                 }
             }
+            /* .input_btn{
+                margin: 4px 0px 4px 8px;
+            } */
         }
         .filter {
             align-items: center;
@@ -62,21 +66,32 @@ const Modal = (): React.ReactElement => {
     `;
 
     const inputComplete = (e?: any) => {
-        console.log('----blur',e);
-        // 리렌더링 되서 element가 사라질 떄 blur이벤트가 발생되어 원했던 결과와 달라지는 것 같음
-        if(!e.target.querySelector("input")){
-            // onToggleExcludeKeyword(false);
-        }else {
-            console.log('----업',e,e.target);
-        }
-       
+        // e.persist();
+        // autoInput reset
+        // 제외할 키워드 추가
+
+        e.target.value = '';
+        if (flag) { onToggleExcludeKeyword(false); }
     };
     const keyDown = (e: any) => {
         if (e.keyCode === 13) { // enter입력
             inputComplete(e);
         }
     };
+    const aaa = (e: any) => {
+        console.log('--flag');
+        flag = true;
+    };
+    const Wrap = styled.div`
+        /* display:flex; */
+    `;
 
+    const CusAAA = styled(InputButton)`
+  margin: 4px 0px 4px 8px;
+    .input_btn{
+    margin: 0;
+    }
+    `;
     return ModalState.show ? ReactDOM.createPortal(
         <ModalWrapp>
             <Backdrop></Backdrop>
@@ -122,32 +137,39 @@ const Modal = (): React.ReactElement => {
                     <Label color={theme.colors.g500}
                         weight='bold'>제외할 키워드
                     </Label>
-                    {/* {FilteringState.ExcludeKeywordFlag && <InputButton
-                        onBlur={(e: any) => inputComplete(e)}
-                        onKeyDown={keyDown}
-                    ></InputButton>}
-                    <IconButton
-                        onClick={() => onToggleExcludeKeyword(true)}
-                        className='btn'
-                        icon={<CloseIc />}
-                        color={theme.colors.blue}
-                        variant='outlined'
-                        corner='rounded'
-                        btnInnerIc={true}></IconButton> */}
-                    {FilteringState.ExcludeKeywordFlag ? <InputButton
-                        // onBlur={(e: any) => inputComplete(e)}
-                        onClick={(e: any) => inputComplete(e)}
-                        onKeyDown={keyDown}
-                    ></InputButton> :
-                        <IconButton
-                            onClick={() => onToggleExcludeKeyword(true)}
+                    <Wrap>
+                        <Button
                             className='btn'
-                            icon={<CloseIc />}
                             color={theme.colors.blue}
-                            variant='outlined'
                             corner='rounded'
-                            btnInnerIc={true}></IconButton>
-                    }
+                            variant='contained'
+                        >테스트</Button>
+                        <Button
+                            className='btn'
+                            color={theme.colors.blue}
+                            corner='rounded'
+                            variant='contained'
+                        >테스트</Button>
+                        {FilteringState.ExcludeKeywordFlag ? <CusAAA
+                            // className='input_btn'
+                            minWidth={40}
+                            placeholder='변경'
+                            onBlur={(e: any) => inputComplete(e)}
+                            onChange={aaa}
+                            onKeyDown={keyDown}
+                            // color={theme.colors.g500}
+                            onCancle={() => onToggleExcludeKeyword(false)}
+                        ></CusAAA> :
+                            <IconButton
+                                onClick={() => onToggleExcludeKeyword(true)}
+                                className='btn'
+                                icon={<CloseIc />}
+                                color={theme.colors.blue}
+                                variant='outlined'
+                                corner='rounded'
+                                btnInnerIc={true}></IconButton>
+                        }
+                    </Wrap>
                 </div>
             </StyleDiv>
         </ModalWrapp>
