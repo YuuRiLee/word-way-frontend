@@ -10,22 +10,13 @@ export interface LabelProps {
 }
 
 const Label = (props: LabelProps): React.ReactElement<LabelProps> => {
-  const {
-    children,
-    className,
-  } = props;
+  const { children, className } = props;
 
-  return (
-    <div className={className}>{children}</div>
-  );
+  return <div className={className}>{children}</div>;
 };
 
 const StyledLabel = styled(Label)((props) => {
-  const {
-    size,
-    color,
-    weight,
-  } = props;
+  const { size, color, weight } = props;
 
   let fontSize;
   switch (size) {
@@ -46,18 +37,30 @@ const StyledLabel = styled(Label)((props) => {
     color: ${color};
     padding: calc(${fontSize} * 0.1);
     font-size: ${fontSize};
-    ${size === 'medium' && css`
+    ${
+      size === 'medium' &&
+      css`
         font-weight: 500;
-    `}
-    ${weight === 'light' && css`
+      `
+    }
+    ${
+      weight === 'light' &&
+      css`
         font-weight: 300;
-    `}
-    ${weight === 'semi' && css`
+      `
+    }
+    ${
+      weight === 'semi' &&
+      css`
         font-weight: 500;
-    `}
-    ${weight === 'bold' && css`
+      `
+    }
+    ${
+      weight === 'bold' &&
+      css`
         font-weight: bold;
-    `}
+      `
+    }
   `;
 });
 

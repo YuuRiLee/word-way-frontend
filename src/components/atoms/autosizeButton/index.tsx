@@ -9,24 +9,14 @@ export interface AutosizeButtonProps extends AutosizeInputProps {
 }
 
 const AutosizeButton = (props: AutosizeButtonProps): React.ReactElement<AutosizeButtonProps> => {
-  const {
-    className,
-    onCancle,
-    ...other
-  } = props;
+  const { className, onCancle, ...other } = props;
   const theme = useContext(ThemeContext);
 
   return (
     <StyledAutosizeInput className={className}>
-      <div className='content_wrapp'>
+      <div className="content_wrapp">
         <AutosizeInput {...other} />
-        <CloseButton
-          onClick={onCancle}
-          icon={<CloseIcon />}
-          variant='text'
-          size='small'
-          color={theme.colors.blue}
-        />
+        <CloseButton onClick={onCancle} icon={<CloseIcon />} variant="text" size="small" color={theme.colors.blue} />
       </div>
     </StyledAutosizeInput>
   );

@@ -10,20 +10,12 @@ export interface CheckboxProps {
 }
 
 const Checkbox = (props: CheckboxProps): React.ReactElement<CheckboxProps> => {
-  const {
-    className,
-    ...other
-  } = props;
+  const { className, ...other } = props;
 
   return (
     <div className={className}>
-      <input
-        className='inp-cbx'
-        id='cbx'
-        type='checkbox'
-        {...other}
-      />
-      <label className='cbx' htmlFor='cbx'>
+      <input className="inp-cbx" id="cbx" type="checkbox" {...other} />
+      <label className="cbx" htmlFor="cbx">
         <div>
           <CheckboxIcon>
             <CheckmarkIc />
@@ -38,7 +30,7 @@ const StyledCheckbox = styled(Checkbox)`
   .inp-cbx {
     display: none;
   }
-  ${({theme})=> css`
+  ${({ theme }) => css`
     .cbx {
       margin: auto;
       -webkit-user-select: none;
@@ -55,7 +47,7 @@ const StyledCheckbox = styled(Checkbox)`
         border-radius: 3px;
         vertical-align: middle;
         border: 1px solid ${theme.colors.g100};
-        transition: all .2s ease;
+        transition: all 0.2s ease;
         background: ${theme.colors.g100};
       }
       &:hover div {
@@ -68,7 +60,7 @@ const StyledCheckbox = styled(Checkbox)`
         border-color: ${theme.colors.g100};
         svg {
           stroke-dashoffset: 0;
-          transition: all .3s ease;
+          transition: all 0.3s ease;
         }
       }
     }
@@ -76,7 +68,7 @@ const StyledCheckbox = styled(Checkbox)`
 `;
 
 const CheckboxIcon = styled(Icon)`
-  width:100%;
+  width: 100%;
   svg {
     fill: none;
     stroke: ${(props) => props.theme.colors.g500};
@@ -86,7 +78,7 @@ const CheckboxIcon = styled(Icon)`
     stroke-dasharray: 20;
     stroke-dashoffset: 20;
     transition: all 0s ease;
-    transition-delay: .1s;
+    transition-delay: 0.1s;
   }
 `;
 

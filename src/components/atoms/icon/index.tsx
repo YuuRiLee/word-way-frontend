@@ -9,22 +9,14 @@ export interface IconProps {
 }
 
 const Icon = (props: IconProps): React.ReactElement<IconProps> => {
-  const {
-    children,
-    className,
-  } = props;
+  const { children, className } = props;
 
-  return (
-    <span className={className}>{children}</span>
-  );
+  return <span className={className}>{children}</span>;
 };
 
 const StyledIcon = styled(Icon)((props) => {
-  const {
-    size,
-    color,
-  } = props;
-  const fontSize = (!size || size === 'medium') ? 1.1 : (size === 'small' ? 0.8 : 1.8);
+  const { size, color } = props;
+  const fontSize = !size || size === 'medium' ? 1.1 : size === 'small' ? 0.8 : 1.8;
 
   return css`
     width: 1em;

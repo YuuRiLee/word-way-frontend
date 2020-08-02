@@ -1,5 +1,5 @@
 export type WordPart =
-  'verb'
+  | 'verb'
   | 'noun'
   | 'pronoun'
   | 'numeral'
@@ -14,7 +14,7 @@ export type WordModel = {
   contents: string;
   part: WordPart;
   relatedPronunciations?: string[];
-}
+};
 
 export type CardModel = {
   id: string;

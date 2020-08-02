@@ -10,20 +10,13 @@ export interface IconButtonProps extends ButtonProps {
 }
 
 const IconButton = (props: IconButtonProps): React.ReactElement<IconButtonProps> => {
-  const {
-    children,
-    left,
-    borderIconOnly,
-    ...other
-  } = props;
+  const { children, left, borderIconOnly, ...other } = props;
 
   return (
     <Button {...other}>
-      <div className='label_wrapp'>
+      <div className="label_wrapp">
         {left && <InnerIcon {...props} />}
-        <div className='text_wrapp'>
-          {borderIconOnly ? <br /> : children}
-        </div>
+        <div className="text_wrapp">{borderIconOnly ? <br /> : children}</div>
         {left || <InnerIcon {...props} />}
       </div>
     </Button>
@@ -31,14 +24,7 @@ const IconButton = (props: IconButtonProps): React.ReactElement<IconButtonProps>
 };
 
 const InnerIcon = (props: IconButtonProps): React.ReactElement<IconButtonProps> => {
-  const {
-    children,
-    left,
-    icon,
-    color,
-    variant,
-    borderIconOnly,
-  } = props;
+  const { children, left, icon, color, variant, borderIconOnly } = props;
   const theme = useContext(ThemeContext);
 
   let icColor: string;
@@ -52,18 +38,26 @@ const InnerIcon = (props: IconButtonProps): React.ReactElement<IconButtonProps> 
 
   const StyledIcon = styled(Icon)`
     margin: 0 auto;
-    ${!borderIconOnly && children && css`
-      ${left && css`
+    ${!borderIconOnly &&
+    children &&
+    css`
+      ${left &&
+      css`
         padding-right: 8px;
       `}
-      ${!left && css`
+      ${!left &&
+      css`
         padding-left: 8px;
       `}
     `}
   `;
 
-  const styledIcon = <StyledIcon size='small' color={icColor}>{icon}</StyledIcon>;
-  return (borderIconOnly ? <div className='ic_wrapp'>{styledIcon}</div> : styledIcon);
+  const styledIcon = (
+    <StyledIcon size="small" color={icColor}>
+      {icon}
+    </StyledIcon>
+  );
+  return borderIconOnly ? <div className="ic_wrapp">{styledIcon}</div> : styledIcon;
 };
 
 const StyledIconButton = styled(IconButton)`
@@ -82,9 +76,12 @@ const StyledIconButton = styled(IconButton)`
       flex: 1;
     }
   }
-  ${({ children, borderIconOnly }) => !children && !borderIconOnly && css`
-    min-width: auto;
-  `}
+  ${({ children, borderIconOnly }) =>
+    !children &&
+    !borderIconOnly &&
+    css`
+      min-width: auto;
+    `}
 `;
 
 IconButton.defaultProps = {

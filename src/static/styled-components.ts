@@ -3,11 +3,11 @@ import { ThemedStyledComponentsModule } from 'styled-components';
 import { StyleClosetTheme } from './theme';
 
 const {
-    default: styled,
-    css,
-    createGlobalStyle,
-    keyframes,
-    ThemeProvider,
+  default: styled,
+  css,
+  createGlobalStyle,
+  keyframes,
+  ThemeProvider,
 } = styledComponents as ThemedStyledComponentsModule<StyleClosetTheme>;
 
 export { css, createGlobalStyle, keyframes, ThemeProvider };

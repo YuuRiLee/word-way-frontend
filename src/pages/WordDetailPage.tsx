@@ -7,11 +7,7 @@ interface WordDetailProps {
 
 const WordDetailPage: React.FC<RouteComponentProps<WordDetailProps>> = (props) => {
   const { wordId } = props.match.params;
-  return (
-    <div>
-      WordDetail Page {wordId}
-    </div>
-  );
+  return <div>WordDetail Page {wordId}</div>;
 };
 
 export default WordDetailPage;

@@ -17,13 +17,7 @@ export interface AutosizeInputProps {
 }
 
 const AutosizeInput = (props: AutosizeInputProps): React.ReactElement<AutosizeInputProps> => {
-  const {
-    className,
-    placeholder,
-    minWidth,
-    onChange,
-    ...other
-  } = props;
+  const { className, placeholder, minWidth, onChange, ...other } = props;
   const { AutosizeInputState, onChangeValue, onChangeWidth } = useAutosizeInput();
   let sizerEle: HTMLSpanElement | null;
   let placeHolderSizer: HTMLSpanElement | null;
@@ -68,17 +62,22 @@ const AutosizeInput = (props: AutosizeInputProps): React.ReactElement<AutosizeIn
         placeholder={placeholder}
         {...other}
       />
-      <HiddenText ref={(ref) => { sizerEle = ref; }}>
+      <HiddenText
+        ref={(ref) => {
+          sizerEle = ref;
+        }}
+      >
         {AutosizeInputState.value}
       </HiddenText>
-      {
-        placeholder
-        && (
-          <HiddenText ref={(ref) => { placeHolderSizer = ref; }}>
-            {placeholder}
-          </HiddenText>
-        )
-      }
+      {placeholder && (
+        <HiddenText
+          ref={(ref) => {
+            placeHolderSizer = ref;
+          }}
+        >
+          {placeholder}
+        </HiddenText>
+      )}
     </div>
   );
 };
@@ -108,13 +107,13 @@ const StyledAutosizeInput = styled(AutosizeInput)`
     font-weight: 500;
     font-size: 1.1em;
     border: none;
-    ${({color})=> css`
-    color: ${color};
-    caret-color: ${color};
+    ${({ color }) => css`
+      color: ${color};
+      caret-color: ${color};
     `}
     outline: none;
     background: transparent;
-    }
+  }
 `;
 
 AutosizeInput.defaultProps = {

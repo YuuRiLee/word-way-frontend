@@ -13,14 +13,14 @@ type WordResponse = {
   contents: string;
   part: string;
   related_pronunciations: string[];
-}
+};
 
 type PronunciationResponse = {
   id: string;
   pronunciation: string;
   words: WordResponse[];
   related_pronunciations: string[];
-}
+};
 
 interface WordListProps {
   searchWord: string;
@@ -41,18 +41,18 @@ const WordListPage: React.FC<RouteComponentProps<WordListProps>> = (props) => {
     console.log('update query string');
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await request('/api/words/', 'get');
         const cardResponses: CardModel[] = res.data.map((data: PronunciationResponse) => {
-          const words = data.words.map(wordData => {
+          const words = data.words.map((wordData) => {
             return {
               id: wordData.id,
               contents: wordData.contents,
               part: wordData.part,
               relatedPronunciations: wordData.related_pronunciations,
-            }
+            };
           });
           return {
             words,
@@ -63,21 +63,17 @@ const WordListPage: React.FC<RouteComponentProps<WordListProps>> = (props) => {
         });
         setCards(cardResponses);
       } catch {
-        props.history.push('/');  // FIXME 실패시 모달을 띄워줘야 함.
+        props.history.push('/'); // FIXME 실패시 모달을 띄워줘야 함.
       }
     };
     fetchData();
-  }, [])
+  }, [props.history]);
 
   return (
     <div>
       <SearchBox onSearch={onSearch} />
       검색어: <div onClick={gotoDetail}> {query.words} </div>
-      {
-        cards
-        ? cards.map(card => <Card data={card}/>)
-        : <div>로딩중</div>
-      }
+      {cards ? cards.map((card) => <Card data={card} />) : <div>로딩중</div>}
     </div>
   );
 };
